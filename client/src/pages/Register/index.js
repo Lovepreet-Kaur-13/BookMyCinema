@@ -1,14 +1,29 @@
-import {Form, Input, Button } from "antd";
+import {Form, Input, Button, message } from "antd";
 import { Link } from "react-router-dom";
+import { RegisterUser } from "../../api/users";
 
 const Register = () =>{
+    const onFinish = async(values) =>{
+        try{
+            const response = await RegisterUser(values);
+            if(response.success){
+                message.success(response.message);
+            }
+            else{
+                message.error(response.message);
+            }
+        } catch(error){
+            message.error(error.message);
+        }
+    }
       return (
         <div className="auth-page">
             <div className="auth-card">
                 <h2 className="auth-title">
                     Register to BookMyCinema
                 </h2>
-                <Form layout="vertical">
+                <Form layout="vertical"
+                    onFinish={onFinish}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -36,11 +51,10 @@ const Register = () =>{
                         name="password"
                         rules={[{ required: true, message: "Password is required" }]}
                     >
-                        <Input
+                        <Input.Password
                             id="password"
-                            type="password"
                             placeholder="Enter your Password">
-                        </Input>
+                        </Input.Password>
                     </Form.Item>
                     <Form.Item className="d-block">
                         <Button type="primary"

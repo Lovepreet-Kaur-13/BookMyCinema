@@ -1,14 +1,32 @@
-import {Form, Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import {Form, Input, Button, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginUser } from "../../api/users";
+
 
 const Login = () =>{
+    const navigate = useNavigate();
+     const onFinish = async(values) =>{
+        try{
+            const response = await LoginUser(values);
+            if(response.success){
+                message.success(response.message);
+                navigate("/");
+            }
+            else{
+                message.error(response.message);
+            }
+        } catch(error){
+            message.error(error.message);
+        }
+    }
       return (
         <div className="auth-page">
             <div className="auth-card">
                 <h2 className="auth-title">
                     Login to BookMyCinema
                 </h2>
-                <Form layout="vertical">
+                <Form layout="vertical"
+                onFinish={onFinish}>
                     <Form.Item
                         label="Email"
                         name="email"
@@ -25,11 +43,10 @@ const Login = () =>{
                         name="password"
                         rules={[{ required: true, message: "Password is required" }]}
                     >
-                        <Input
+                        <Input.Password
                             id="password"
-                            type="password"
                             placeholder="Enter your Password">
-                        </Input>
+                        </Input.Password>
                     </Form.Item>
                     <Form.Item className="d-block">
                         <Button type="primary"
