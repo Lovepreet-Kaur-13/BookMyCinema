@@ -39,5 +39,43 @@ const registerUser = async (req, res) => {
 }
 }
 
+// LOGIN USER
 
-module.exports = { registerUser };
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({email});
+
+        if (!user) {
+            return res.status(400).send({
+                success: false,
+                message: "User doesn't exist, Please Register"
+            });
+        }
+
+        
+        if(password !== user.password){
+            return res.status(400).send({
+                success:false,
+                message:"Invalid password"
+            })
+
+        }
+
+
+        res.status(200).send({
+            success: true,
+            message: "User logged in successfully"
+        });
+    }
+    catch (error) {
+    res.status(500).send({
+        success: false,
+        message: error.message
+    });
+}
+}
+
+
+module.exports = { registerUser, loginUser };
