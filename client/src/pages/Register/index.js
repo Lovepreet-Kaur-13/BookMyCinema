@@ -1,8 +1,63 @@
-import React from "react";
+import {Form, Input, Button } from "antd";
+import { Link } from "react-router-dom";
 
 const Register = () =>{
-    return(
-        <div>Register</div>
+      return (
+        <div className="auth-page">
+            <div className="auth-card">
+                <h2 className="auth-title">
+                    Register to BookMyCinema
+                </h2>
+                <Form layout="vertical">
+                    <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[{ required: true, message: "Name is required" }]}
+                    >
+                        <Input
+                            id="name"
+                            type="text"
+                            placeholder="Enter your Name">
+                        </Input>
+                    </Form.Item>
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[{ required: true, message: "Email is required" }]}
+                    >
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email">
+                        </Input>
+                    </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: "Password is required" }]}
+                    >
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="Enter your Password">
+                        </Input>
+                    </Form.Item>
+                    <Form.Item className="d-block">
+                        <Button type="primary"
+                            block
+                            htmlType="submit"
+                            style={{ fontSize: "1rem", fontWeight: 600, padding: "18px" }}
+                        >Register
+                        </Button>
+                    </Form.Item>
+                    <div className="auth-footer">
+                        Already have an account? <Link to="/login">Login here</Link>
+                    </div>
+                </Form>
+            </div>
+
+        </div>
+
     )
 }
 
