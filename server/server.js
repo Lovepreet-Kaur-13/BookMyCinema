@@ -6,6 +6,14 @@ const app = express();
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const userRouter = require("./routes/userRoutes");
+
+// MIDDLEWARE TO PARSE JSON
+app.use(express.json());
+
+//ROUTES
+app.use("/api/users" , userRouter);
+
 connectDB();
 
 const PORT = 8081;
