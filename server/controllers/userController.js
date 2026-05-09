@@ -85,5 +85,22 @@ const loginUser = async (req, res) => {
 }
 }
 
+const getCurrentUser = async(req, res) =>{
+    try{
+        const user = await User.findById(req.body.userId).select("-password");
+        res.status(200).send({
+            success: true,
+            message:"You are authorized",
+            data: user
+        })
+    }
+    catch(error){
+        res.status(500).send({
+            success:false,
+            message:error.message
+        })
+    }
+}
 
-module.exports = { registerUser, loginUser };
+
+module.exports = { registerUser, loginUser, getCurrentUser };
