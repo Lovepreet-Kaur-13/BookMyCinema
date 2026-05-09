@@ -7,10 +7,10 @@ const authMiddleware = async(req, res, next ) =>{
         //verify token
         console.log("token", token);
         const verifiedToken = jwt.verify(token, process.env.JWT_SECRETKEY);
-
+        console.log(verifiedToken);
         // attach userId to request
-        req.body.userId = verifiedToken.userId;
-
+        req.user = verifiedToken.userId;
+        
         next();
 
     }

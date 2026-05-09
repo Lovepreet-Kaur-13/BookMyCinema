@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
 
 const getCurrentUser = async (req, res) => {
     try {
-        const user = await User.findById(req.body.userId).select("-password");
+        const user = await User.findById(req.user).select("-password");
         res.status(200).send({
             success: true,
             message: "You are authorized",
