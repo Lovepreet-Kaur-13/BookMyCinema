@@ -6,22 +6,24 @@ import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Provider } from "react-redux";
 import store from './redux/store';
+import Admin from './pages/Admin';
 
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-          <ProtectedRoute>
-            <Home />
-            </ProtectedRoute> 
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
           } />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 }
