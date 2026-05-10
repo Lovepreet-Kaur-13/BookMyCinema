@@ -46,6 +46,10 @@
   font-size: 14px;
 }
 
+.justify-content-between{
+  justify-content: space-between;
+}
+
 
 .App-link {
   color: #61dafb;
