@@ -6,13 +6,17 @@ import { GetAllMovies } from '../../api/movies';
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import MovieForm from "./MovieForm";
 
 
 
 const MovieList = () => {
-
     const [movies, setMovies] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [formType, setFormType] = useState("add");
     const dispatch = useDispatch();
+
 
     const getData = async () => {
         try {
@@ -95,7 +99,11 @@ const MovieList = () => {
                         display: "flex",
                         gap: "10px",
                     }}>
-                        <Button
+                        <Button onClick={() => {
+                        setSelectedMovie(data);   
+                        setFormType("edit");      
+                        setIsModalOpen(true);     
+                    }}
                         >
                             <EditOutlined />
                         </Button>
@@ -125,6 +133,11 @@ const MovieList = () => {
                     backgroundColor: "green",
                     borderColor: "green",
                 }}
+                    onClick={() => {
+                        setIsModalOpen(true);
+                        setFormType("add");
+                    }}
+
                 >
                     Add Movie
                 </Button>
@@ -138,8 +151,16 @@ const MovieList = () => {
                 <Table dataSource={movies} columns={tableHeadings} pagination={{ pageSize: 5 }} />
             </div>
 
-
-
+            {isModalOpen && (
+                <MovieForm
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    selectedMovie={selectedMovie}
+                    setSelectedMovie={setSelectedMovie}
+                    formType={formType}
+                    getData={getData}
+                />
+            )}
 
         </>
 
