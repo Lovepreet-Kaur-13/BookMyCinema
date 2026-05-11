@@ -1,22 +1,22 @@
-import {Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Radio } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../../api/users";
 
-const Register = () =>{
-    const onFinish = async(values) =>{
-        try{
+const Register = () => {
+    const onFinish = async (values) => {
+        try {
             const response = await RegisterUser(values);
-            if(response.success){
+            if (response.success) {
                 message.success(response.message);
             }
-            else{
+            else {
                 message.error(response.message);
             }
-        } catch(error){
+        } catch (error) {
             message.error(error.message);
         }
     }
-      return (
+    return (
         <div className="auth-page">
             <div className="auth-card">
                 <h2 className="auth-title">
@@ -55,6 +55,17 @@ const Register = () =>{
                             id="password"
                             placeholder="Enter your Password">
                         </Input.Password>
+                    </Form.Item>
+                    <Form.Item
+                        label="Register as a Partner"
+                        name="role"
+                        initialValue="user"
+                        rules={[{ required: true, message: "Please select an option!" }]}
+                    >
+                        <Radio.Group>
+                            <Radio value="partner">Yes</Radio>
+                            <Radio value="user">No</Radio>
+                        </Radio.Group>
                     </Form.Item>
                     <Form.Item className="d-block">
                         <Button type="primary"
