@@ -7,12 +7,13 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import MovieForm from "./MovieForm";
-
+import DeleteMovieModal from "./DeleteMovieModal";
 
 
 const MovieList = () => {
     const [movies, setMovies] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] =useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [formType, setFormType] = useState("add");
     const dispatch = useDispatch();
@@ -107,10 +108,13 @@ const MovieList = () => {
                         >
                             <EditOutlined />
                         </Button>
-                        <Button
+                        <Button onClick={() => {
+                        setSelectedMovie(data);
+                        setIsDeleteModalOpen(true);     
+                    }}
                         >
                             <DeleteOutlined />
-                        </Button>
+                        </ Button>
                     </div>
                 );
             },
@@ -158,6 +162,16 @@ const MovieList = () => {
                     selectedMovie={selectedMovie}
                     setSelectedMovie={setSelectedMovie}
                     formType={formType}
+                    getData={getData}
+                />
+            )}
+
+            {isDeleteModalOpen && (
+                <DeleteMovieModal
+                    isDeleteModalOpen={isDeleteModalOpen}
+                    setIsDeleteModalOpen={setIsDeleteModalOpen}
+                    selectedMovie={selectedMovie}
+                    setSelectedMovie={setSelectedMovie}
                     getData={getData}
                 />
             )}
