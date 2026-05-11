@@ -1,28 +1,27 @@
-import React, { Children } from "react";
+import React from "react";
 import { Tabs } from "antd";
 import MovieList from "./MovieList";
 import TheatreTable from "./TheatreTable";
 
-const Admin = () =>{
-    
+const Admin = () => {
+
     const tabItems = [
         {
-            key:"1",
+            key: "movies",
             label: "Movies",
             children: <MovieList />
         },
         {
-            key:"2",
-            label:"Theatres",
+            key: "theatres",
+            label: "Theatres",
             children: <TheatreTable />
         }
     ]
     return (
-        <div>
+        <div style={{ padding: "20px" }}>
             <Tabs items={tabItems} />
         </div>
-
-    )
+    );
 }
 
 export default Admin;
