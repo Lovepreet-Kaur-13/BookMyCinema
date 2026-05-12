@@ -23,7 +23,6 @@ const addTheatre = async (req, res) => {
 const getAllTheatres = async (req, res) => {
     try {
         const allTheatres = await Theatre.find().populate("owner");
-;
         res.status(200).send({
             success: true,
             message: "All Theatres have been fetched",
@@ -79,5 +78,7 @@ const deleteTheatre = async (req, res) => {
         });
     }
 }
+
+
 
 module.exports = { addTheatre, getAllTheatres, updateTheatre, deleteTheatre };
