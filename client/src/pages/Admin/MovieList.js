@@ -13,7 +13,7 @@ import DeleteMovieModal from "./DeleteMovieModal";
 const MovieList = () => {
     const [movies, setMovies] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] =useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [formType, setFormType] = useState("add");
     const dispatch = useDispatch();
@@ -27,12 +27,17 @@ const MovieList = () => {
 
             const allMovies = response.data;
 
-            setMovies(
+           if(response.success){
+             setMovies(
                 allMovies.map((item) => ({
                     ...item,
                     key: item._id,
                 }))
             );
+           }
+           else {
+            message.error(response.message);
+        }
         } catch (error) {
             console.log(error);
             message.error("Failed to fetch movies");
@@ -40,6 +45,25 @@ const MovieList = () => {
             dispatch(HideLoading());
         }
     };
+
+    const handleEdit = (data) => {
+        setSelectedMovie(data);
+        setFormType("edit");
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = (data) => {
+        setSelectedMovie(data);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleAdd = () => {
+        setIsModalOpen(true);
+        setFormType("add");
+
+
+    };
+
     useEffect(() => {
         getData();
     }, []);
@@ -100,21 +124,14 @@ const MovieList = () => {
                         display: "flex",
                         gap: "10px",
                     }}>
-                        <Button onClick={() => {
-                        setSelectedMovie(data);   
-                        setFormType("edit");      
-                        setIsModalOpen(true);     
-                    }}
+                        <Button type="default" onClick={() => handleEdit(data)}
                         >
                             <EditOutlined />
                         </Button>
-                        <Button onClick={() => {
-                        setSelectedMovie(data);
-                        setIsDeleteModalOpen(true);     
-                    }}
+                        <Button danger onClick={() => handleDelete(data)}
                         >
                             <DeleteOutlined />
-                        </ Button>
+                        </Button>
                     </div>
                 );
             },
@@ -124,32 +141,37 @@ const MovieList = () => {
 
     return (
         <>
-            <div style={{
-                padding: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-            }}>
-                <Button type="primary" style={{
-                    backgroundColor: "green",
-                    borderColor: "green",
+            <div
+                style={{
+                    backgroundColor: "white",
+                    padding: "20px",
+                    borderRadius: "12px",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
                 }}
-                    onClick={() => {
-                        setIsModalOpen(true);
-                        setFormType("add");
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "20px",
                     }}
-
                 >
-                    Add Movie
-                </Button>
-            </div>
-            <div style={{
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "12px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-            }}>
-                <Table dataSource={movies} columns={tableHeadings} pagination={{ pageSize: 5 }} />
+                    <h2 style={{ margin: 0 }}>Movie List</h2>
+                    <Button
+                        type="primary"
+                        onClick={handleAdd}
+                    >
+                        Add Movie
+                    </Button>
+                </div>
+
+                {/* TABLE */}
+                <Table
+                    dataSource={movies}
+                    columns={tableHeadings}
+                    pagination={{ pageSize: 5 }}
+                />
             </div>
 
             {isModalOpen && (
@@ -172,10 +194,8 @@ const MovieList = () => {
                     getData={getData}
                 />
             )}
-
         </>
-
-    )
+    );
 }
 
 export default MovieList;

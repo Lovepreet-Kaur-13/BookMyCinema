@@ -18,7 +18,7 @@ const Admin = () => {
         }
     ]
     return (
-        <div style={{ padding: "20px" }}>
+        <div style={{ padding: "0px 20px" }}>
             <Tabs items={tabItems} />
         </div>
     );
