@@ -122,9 +122,6 @@ const MovieList = () => {
 
     ]
 
-
-
-
     return (
         <>
             <div style={{

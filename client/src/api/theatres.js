@@ -22,7 +22,7 @@ export const GetAllTheatresForAdmin = async () => {
 // Update Theatre
 export const UpdateTheatre = async (payload) => {
     try {
-        const response = await axiosInstance.put("api/theatres/update-theatre", payload);
+        const response = await axiosInstance.put(`api/theatres/update-theatre/${payload.theatreId}`,payload);
         return response.data;
     } catch (error) {
         return error.response;
