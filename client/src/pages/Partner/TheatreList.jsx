@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
 import TheatreForm from "./TheatreFormModal";
 import DeleteTheatreModal from "./DeleteTheatreModal";
+import ShowModal from "./ShowModal";
 
 const TheatreList = () => {
     const [theatres, setTheatres] = useState([]);
@@ -13,7 +14,9 @@ const TheatreList = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedTheatre, setSelectedTheatre] = useState(null);
     const [formType, setFormType] = useState("add");
-   
+    const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+
+
 
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.users);
@@ -101,7 +104,7 @@ const TheatreList = () => {
                     {/* EDIT */}
                     <Button
                         type="primary"
-                        onClick={()=> handleEdit(data)}
+                        onClick={() => handleEdit(data)}
                     >
                         <EditOutlined />
                     </Button>
@@ -109,14 +112,19 @@ const TheatreList = () => {
                     {/* DELETE */}
                     <Button
                         danger
-                        onClick={()=> handleDelete(data)}
+                        onClick={() => handleDelete(data)}
                     >
                         <DeleteOutlined />
                     </Button>
 
                     {/* SHOWS */}
                     {data.isActive && (
-                        <Button type="default">+ Shows</Button>
+                        <Button
+                            onClick={() => {
+                                setIsShowModalOpen(true);
+                                setSelectedTheatre(data);
+                            }}
+                            type="default">+ Shows</Button>
                     )}
                 </div>
             ),
@@ -180,6 +188,13 @@ const TheatreList = () => {
                     selectedTheatre={selectedTheatre}
                     setSelectedTheatre={setSelectedTheatre}
                     getData={getData}
+                />
+            )}
+            {isShowModalOpen && (
+                <ShowModal
+                    isShowModalOpen={isShowModalOpen}
+                    setIsShowModalOpen={setIsShowModalOpen}
+                    selectedTheatre={selectedTheatre}
                 />
             )}
         </>
