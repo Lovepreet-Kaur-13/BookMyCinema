@@ -13,7 +13,7 @@ showRouter.post("/get-all-shows-by-theatre", getAllShowsByTheatre);
 showRouter.put("/update-show", updateShow);
 
 // delete show
-showRouter.delete("/delete-show", deleteShow);
+showRouter.post("/delete-show", deleteShow);
 
 showRouter.post("/get-all-theatres-by-movie", getAllTheatresByMovie );
 
