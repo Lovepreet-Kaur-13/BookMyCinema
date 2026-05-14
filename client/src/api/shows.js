@@ -1,6 +1,6 @@
 import { axiosInstance } from ".";
 
-export const addShow = async (payload) => {
+export const AddShow = async (payload) => {
     try {
         const response = await axiosInstance.post("api/shows/add-show", payload);
         return response.data;
@@ -10,7 +10,7 @@ export const addShow = async (payload) => {
 };
 
 
-export const updateShow = async (payload) => {
+export const UpdateShow = async (payload) => {
     try {
         const response = await axiosInstance.put("api/shows/update-show", payload);
         console.log(payload, response);
@@ -20,7 +20,7 @@ export const updateShow = async (payload) => {
     }
 };
 
-export const getShowsByTheatre = async (payload) => {
+export const GetShowsByTheatre = async (payload) => {
     try {
         const response = await axiosInstance.post("api/shows/get-all-shows-by-theatre", payload);
         return response.data;
@@ -30,7 +30,7 @@ export const getShowsByTheatre = async (payload) => {
 };
 
 
-export const deleteShow = async (payload) => {
+export const DeleteShow = async (payload) => {
     try {
         const response = await axiosInstance.delete("api/shows/delete-show", payload);
         return response.data;
@@ -40,7 +40,7 @@ export const deleteShow = async (payload) => {
 };
 
 
-export const getAllTheatresByMovie = async (payload) => {
+export const GetAllTheatresByMovie = async (payload) => {
     try {
         const response = await axiosInstance.post("api/shows/get-all-theatres-by-movie", payload);
         return response.data;
@@ -49,7 +49,7 @@ export const getAllTheatresByMovie = async (payload) => {
     }
 };
 
-export const getShowById = async (payload) => {
+export const GetShowById = async (payload) => {
     try {
         const response = await axiosInstance.post("api/shows/get-show-by-id", payload);
         return response.data;
