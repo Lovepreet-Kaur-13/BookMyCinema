@@ -104,7 +104,9 @@ const ProtectedRoute = ({ children }) => {
                             justifyContent: "space-between"
                         }}
                     >
-                        <h3 style={{ color: "white", margin: 0 }}>
+                        <h3 style={{ color: "white", margin: 0 }} onClick={()=>{
+                            navigate("/");
+                        }}>
                             Book My Cinema
                         </h3>
 
