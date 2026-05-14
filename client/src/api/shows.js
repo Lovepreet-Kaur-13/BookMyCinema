@@ -5,7 +5,7 @@ export const AddShow = async (payload) => {
         const response = await axiosInstance.post("api/shows/add-show", payload);
         return response.data;
     } catch (error) {
-        return err.message;
+        return error.message;
     }
 };
 
@@ -16,7 +16,7 @@ export const UpdateShow = async (payload) => {
         console.log(payload, response);
         return response.data;
     } catch (error) {
-        return err.response;
+        return error.response;
     }
 };
 
@@ -32,7 +32,7 @@ export const GetShowsByTheatre = async (payload) => {
 
 export const DeleteShow = async (payload) => {
     try {
-        const response = await axiosInstance.delete("api/shows/delete-show", payload);
+        const response = await axiosInstance.post("api/shows/delete-show", payload);
         return response.data;
     } catch (error) {
         return error.response;

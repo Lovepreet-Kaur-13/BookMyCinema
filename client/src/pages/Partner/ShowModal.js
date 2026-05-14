@@ -7,7 +7,7 @@ import {
     Button,
     Select,
     Table,
-    message,
+    message, Popconfirm
 } from "antd";
 
 import {
@@ -115,6 +115,7 @@ const ShowModal = ({
 
     // ================= DELETE =================
     const handleDelete = async (showId) => {
+        console.log("DELETED", showId);
         try {
             dispatch(ShowLoading());
 
@@ -195,13 +196,18 @@ const ShowModal = ({
                         }}
                     />
 
-                    <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() =>
-                            handleDelete(data._id)
-                        }
-                    />
+                    <Popconfirm
+                        title="Delete Show"
+                        description="Are you sure you want to delete this show?"
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => handleDelete(data._id)}
+                    >
+                        <Button
+                            danger
+                            icon={<DeleteOutlined />}
+                        />
+                    </Popconfirm>
                 </div>
             ),
         },
