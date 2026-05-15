@@ -9,4 +9,5 @@ theatreRouter.get("/get-all-theatres", getAllTheatres);
 theatreRouter.put("/update-theatre/:theatreId", updateTheatre);
 theatreRouter.delete("/delete-theatre/:theatreId", deleteTheatre);
 
+
 module.exports = theatreRouter;

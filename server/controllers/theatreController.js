@@ -81,4 +81,5 @@ const deleteTheatre = async (req, res) => {
 
 
 
+
 module.exports = { addTheatre, getAllTheatres, updateTheatre, deleteTheatre };

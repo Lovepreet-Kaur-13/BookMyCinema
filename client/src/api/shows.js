@@ -42,12 +42,13 @@ export const DeleteShow = async (payload) => {
 
 export const GetAllTheatresByMovie = async (payload) => {
     try {
-        const response = await axiosInstance.post("api/shows/get-all-theatres-by-movie", payload);
+        const response = await axiosInstance.post("/api/shows/get-all-theatres-by-movie", payload);
         return response.data;
     } catch (error) {
         return error.response;
     }
 };
+
 
 export const GetShowById = async (payload) => {
     try {

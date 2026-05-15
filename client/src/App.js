@@ -9,6 +9,7 @@ import store from './redux/store';
 import Admin from './pages/Admin';
 import Partner from './pages/Partner';
 import UserProfile from './pages/UserProfile';
+import SingleMovie from './pages/Home/SingleMovie';
 
 
 function App() {
@@ -34,6 +35,11 @@ function App() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          } />  
+          <Route path="/movie/:id" element={
+            <ProtectedRoute>
+              <SingleMovie />
             </ProtectedRoute>
           } />  
           <Route path="/register" element={<Register />} />

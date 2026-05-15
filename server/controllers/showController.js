@@ -80,53 +80,36 @@ const deleteShow = async (req, res) => {
 }
 
 const getAllTheatresByMovie = async (req, res) => {
-    try {
-
-        // Get all shows by theatre
-        const { movie, date } = req.params;
-
-        const shows = await Show.find({ movie, date })
-            .populate("theatre");
-
-        // Filter out unique theatres
-        let uniqueTheatres = [];
-
-        shows.forEach((show) => {
-
-            let isTheatre = uniqueTheatres.find(
-                (theatre) =>
-                    theatre._id.toString() ===
-                    show.theatre._id.toString()
-            );
-
-            if (!isTheatre) {
-
-                let showsOfThisTheatre = shows.filter(
-                    (showObj) =>
-                        showObj.theatre._id.toString() ===
-                        show.theatre._id.toString()
-                );
-
-                uniqueTheatres.push({
-                    ...show.theatre._doc,
-                    shows: showsOfThisTheatre,
-                });
-            }
+  try {
+    const { movie, date } = req.body;
+    const shows = await Show.find({ movie, date }).populate("theatre");
+    let uniqueTheatre = [];
+    shows.forEach((show) => {
+      let isTheatre = uniqueTheatre.find(
+        (theatre) => (theatre._id === show.theatre._id)
+      );
+      if (!isTheatre) {
+        let showsOfThisTheatres = shows.filter(
+          (showObj) => showObj.theatre._id === show.theatre._id
+        );
+        uniqueTheatre.push({
+          ...show.theatre._doc,
+          showsOfThisTheatres,
         });
-
-        res.status(200).send({
-            success: true,
-            message: "All theatres fetched!",
-            data: uniqueTheatres,
-        });
-
-    } catch (error) {
-
-        res.status(500).send({
-            success: false,
-            message: error.message,
-        });
-    }
+      }
+    });
+    console.log(uniqueTheatre);
+    res.send({
+      success: true,
+      message: "All Theatres are fetched",
+      data: uniqueTheatre,
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
 // Get show by ID

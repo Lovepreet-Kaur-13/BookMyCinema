@@ -47,3 +47,15 @@ export const DeleteMovie = async (movieId) =>{
         console.log(error);
     }
 }
+
+// GET A SINGLE MOVIE BY ITS ID
+
+export const GetMovieById = async(id) =>{
+    try{
+        const resposne = await axiosInstance.get(`/api/movies/movie/${id}`);
+        return resposne.data;
+    }
+    catch(error){
+        console.log(error);
+    }
+}

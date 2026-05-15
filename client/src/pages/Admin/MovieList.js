@@ -96,7 +96,6 @@ const MovieList = () => {
             render: (text, data) => {
                 const hours = Math.floor(data.duration / 60);
                 const minutes = data.duration % 60;
-
                 return `${hours}h ${minutes}m`;
             },
         },
