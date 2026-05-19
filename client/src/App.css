@@ -53,3 +53,148 @@ max-width: 1000px;
 margin-inline: auto;
 
 }
+
+.seat-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/*  Screen Section */
+
+.screen-container {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 25px;
+}
+
+.screen-text {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 14px;
+}
+
+.screen-div {
+  width: 100%;
+  height: 10px;
+  background: #a44343;
+  border-radius: 20px;
+}
+
+/* Seat Layout */
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Seat Button */
+
+.seat-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.seat-btn:hover {
+  background-color: #1677ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Selected Seat */
+
+.seat-btn.selected {
+  background-color: #2d72c2;
+  color: white;
+}
+
+/* Booked Seat */
+
+.seat-btn.booked {
+  background-color: #ac4546;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Bottom Cards*/
+
+.bottom-card {
+  width: 100%;
+  max-width: 700px;
+  margin-top: 30px;
+  padding: 18px 22px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bottom-card span {
+  font-weight: bold;
+  color: #1677ff;
+}
+
+/* Movie Card Header */
+
+.movie-title-details h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #111827;
+}
+
+.movie-title-details p {
+  margin-top: 8px;
+  color: #6b7280;
+}
+
+.show-name h3 {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #374151;
+}
+
+.show-name span {
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .seat-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+
+  .bottom-card {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .movie-title-details h1 {
+    font-size: 22px;
+  }
+}
