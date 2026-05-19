@@ -163,13 +163,11 @@ const ShowModal = ({
             dataIndex: "ticketPrice",
         },
         {
-            title: "Total Seats",
-            dataIndex: "totalSeats",
-        },
-        {
             title: "Available Seats",
             render: (_, data) =>
-                data.totalSeats - data.bookedSeats.length,
+                (data?.theatre?.seatingLayout?.rows || 0) *
+                (data?.theatre?.seatingLayout?.columns || 0) -
+                (data?.bookedSeats?.length || 0),
         },
         {
             title: "Action",
@@ -387,24 +385,6 @@ const ShowModal = ({
                             </Form.Item>
                         </Col>
 
-                        <Col xs={24} md={8}>
-                            <Form.Item
-                                label="Total Seats"
-                                name="totalSeats"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Required!",
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    type="number"
-                                    size="large"
-                                    placeholder="Enter total seats"
-                                />
-                            </Form.Item>
-                        </Col>
                     </Row>
 
                     {/* BUTTONS */}

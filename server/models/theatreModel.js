@@ -17,6 +17,10 @@ const theatreSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    seatingLayout: {
+        rows: Number,
+        columns: Number,
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",

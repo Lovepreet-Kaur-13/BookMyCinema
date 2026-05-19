@@ -23,30 +23,38 @@ const TheatreForm = ({
                 name: selectedTheatre.name,
                 address: selectedTheatre.address,
                 phone: selectedTheatre.phone,
-                email: selectedTheatre.email
+                email: selectedTheatre.email,
+                rows: selectedTheatre.seatingLayout.rows,
+                columns: selectedTheatre.seatingLayout.columns,
             });
         } else {
             form.resetFields();
         }
-    }, [selectedTheatre, form]);
+    }, [selectedTheatre]);
 
     // submit
     const onFinish = async (values) => {
-        console.log("FORM VALUES:", values);
-        console.log("SELECTED THEATRE:", selectedTheatre);
         try {
             dispatch(ShowLoading());
+
+            const payload = {
+                ...values,
+                seatingLayout: {
+                    rows: values.rows,
+                    columns: values.columns,
+                },
+            };
 
             let response;
 
             if (formType === "add") {
                 response = await AddTheatre({
-                    ...values,
+                    ...payload,
                     owner: user._id,
                 });
             } else {
                 response = await UpdateTheatre({
-                    ...values,
+                    ...payload,
                     theatreId: selectedTheatre._id,
                 });
             }
@@ -58,10 +66,8 @@ const TheatreForm = ({
             } else {
                 message.error(response.message);
             }
-
         } catch (error) {
             message.error(error.message);
-
         } finally {
             dispatch(HideLoading());
         }
@@ -105,6 +111,28 @@ const TheatreForm = ({
                 >
                     <Input.TextArea rows={3} placeholder="Enter address" />
                 </Form.Item>
+
+                <Row gutter={16}>
+                    <Col xs={24} md={12}>
+                        <Form.Item
+                            label="Rows (Number of seat rows in the theatre)"
+                            name="rows"
+                            rules={[{ required: true, message: "Required!" }]}
+                        >
+                            <Input type="number" size="large" placeholder="e.g. 10" />
+                        </Form.Item>
+                    </Col>
+
+                    <Col xs={24} md={12}>
+                        <Form.Item
+                            label="Columns (Number of seat column in the theatre)"
+                            name="columns"
+                            rules={[{ required: true, message: "Required!" }]}
+                        >
+                            <Input type="number" size="large" placeholder="e.g. 12" />
+                        </Form.Item>
+                    </Col>
+                </Row>
 
                 {/* ROW 1 */}
                 <Row gutter={16}>
