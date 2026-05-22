@@ -11,7 +11,12 @@ import Partner from './pages/Partner';
 import UserProfile from './pages/UserProfile';
 import SingleMovie from './pages/Home/SingleMovie';
 import BookShow from './pages/Home/BookShow';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
+const stripePromise = loadStripe(
+  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+);
 
 function App() {
   return (
@@ -37,17 +42,22 @@ function App() {
             <ProtectedRoute>
               <UserProfile />
             </ProtectedRoute>
-          } />  
+          } />
           <Route path="/movie/:id" element={
             <ProtectedRoute>
               <SingleMovie />
             </ProtectedRoute>
-          } />  
-          <Route path="/book-show/:id" element={
-            <ProtectedRoute>
-              <BookShow />
-            </ProtectedRoute>
-          } />  
+          } />
+          <Route
+            path="/book-show/:id"
+            element={
+              <ProtectedRoute>
+                <Elements stripe={stripePromise}>
+                  <BookShow />
+                </Elements>
+              </ProtectedRoute>
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>

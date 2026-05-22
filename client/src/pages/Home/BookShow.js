@@ -1,16 +1,86 @@
 import { useEffect, useState } from "react";
 import { GetShowById } from "../../api/shows";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { message, Card, Row, Col } from "antd";
+import { message, Card, Row, Col, Button, Modal } from "antd";
 import moment from "moment";
+import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { MakePayment } from "../../api/payments";
 
 
 const BookShow = () => {
   const [show, setShow] = useState();
   const [selectedSeats, setSelectedSeats] = useState([]);
-
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams();
+  const dispatch = useDispatch();
+  const stripe = useStripe();
+  const elements = useElements();
+  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
+
+  const handlePayment = async () => {
+    if (!stripe || !elements) {
+      message.warning("Stripe not loaded yet.");
+      return;
+    }
+
+    if (selectedSeats.length === 0) {
+      message.warning("Please select seats.");
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      dispatch(ShowLoading());
+
+      const payload = {
+        amount: selectedSeats.length * show.ticketPrice * 100,
+        description: `${show.movie.title} - ${selectedSeats.length} tickets`,
+        userId: user._id,
+      };
+
+      const response = await MakePayment(payload);
+
+      if (!response.success) {
+        message.error(response.message);
+        setIsProcessing(false);
+        dispatch(HideLoading());
+        return;
+      }
+
+      const clientSecret =
+        response.clientSecret || response.data?.clientSecret;
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.name,
+            email: user.email,
+          },
+        },
+      });
+
+      if (result.error) {
+        message.error(result.error.message);
+        return;
+      }
+
+      if (result.paymentIntent.status === "succeeded") {
+        message.success("Payment successful!");
+        navigate("/profile");
+      }
+    } catch (err) {
+      console.error(err);
+      message.error(err.message || "Payment failed");
+    } finally {
+      setIsProcessing(false);
+      dispatch(HideLoading());
+    }
+  };
 
   const getData = async () => {
     try {
@@ -48,7 +118,6 @@ const BookShow = () => {
   const getSeats = () => {
     return (
       <div className="seat-main-container">
-
         {/* Screen */}
         <div className="screen-container">
           <p className="screen-text">
@@ -133,7 +202,19 @@ const BookShow = () => {
             </span>
           </div>
 
+
+
         </div>
+        <Button className="payment-button"
+          shape="round"
+          size="large"
+          block
+          disabled={selectedSeats.length === 0}
+          onClick={() => setIsModalOpen(true)}
+          type={selectedSeats.length === 0 ? "default" : "primary"}
+        >
+          Pay Now
+        </Button>
       </div>
     );
   };
@@ -148,55 +229,78 @@ const BookShow = () => {
 
               title={
                 <div className="movie-title-details">
-                  <h1>
+                  <h2>
                     {show.movie.title}
-                  </h1>
-
+                  </h2>
                   <p>
                     Theatre:{" "}
-                    {show.theatre.name},{" "}
-                    {
-                      show.theatre.address
-                    }
+                    {show.theatre.name},{" "} {show.theatre.address}
                   </p>
                 </div>
               }
-
               extra={
                 <div >
-
-                  <h3>
-                    <span>
-                      Show Name:
-                    </span>{" "}
+                  <h3 style={{ color: "darkblue" }}>
                     {show.name}
                   </h3>
 
-                  <h3>
-                    <span> Date & Time:</span>{" "}
+
+                  <p><span> Date & Time:</span>{" "}
                     {moment(show.date).format("MMM Do YYYY")}{" "}at{" "}
                     {moment(show.time, "HH:mm").format("hh:mm A")}
-                  </h3>
-
-                  <h3>
+                  </p>
+                  <p>
                     <span>Ticket Price:</span>{" "}Rs.{" "}{show.ticketPrice} only /-
-                  </h3>
+                  </p>
 
-                  <h3>
-                    <span>Total Seats:</span>{" "}{totalSeats}
+                  <span>Total Seats:</span>{" "}{totalSeats}
 
-                    <span>
-                      {" "}&nbsp;|&nbsp; Available Seats: </span>{" "} {availableSeats}
-                  </h3>
+                  <span>
+                    {" "}&nbsp;|&nbsp; Available Seats: </span>{" "} {availableSeats}
 
                 </div>
               }
             >
               {getSeats()}
+
+
             </Card>
           </Col>
         </Row>
       )}
+      <Modal
+        title="Test Payment"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+      >
+        <h3>
+          Total Amount: ₹
+          {selectedSeats.length * (show?.ticketPrice || 0)}
+        </h3>
+
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+              },
+            },
+          }}
+        />
+
+        <Button
+          type="primary"
+          block
+          style={{ marginTop: "20px" }}
+          onClick={handlePayment}
+          loading={isProcessing}
+          disabled={!stripe || isProcessing}
+        >
+          Pay Now
+        </Button>
+      </Modal>
     </>
   );
 };

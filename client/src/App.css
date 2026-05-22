@@ -58,7 +58,6 @@ margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 }
 
 /*  Screen Section */
@@ -89,7 +88,7 @@ margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 12px;
+ 
 }
 
 .seat-row {
@@ -149,6 +148,15 @@ margin-inline: auto;
   align-items: center;
   flex-wrap: wrap;
 }
+
+.payment-button {
+  transition: all 0.3s ease;
+  font-weight: 600;
+  width: 100%;
+  max-width:700px;
+  margin-top: 20px;
+}
+
 
 .bottom-card span {
   font-weight: bold;
