@@ -187,6 +187,76 @@ margin-inline: auto;
   color: #111827;
 }
 
+.myBookingPage {
+  padding: 30px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Card */
+.bookingCard {
+  border-radius: 18px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.cardBody {
+  padding: 22px;
+}
+
+/* Layout */
+.cardContent {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Poster */
+.poster {
+  width: 170px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* Title */
+.movieTitle {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  line-height: 1.2;
+}
+
+/* Details */
+.details p {
+  margin: 0;
+  line-height: 2.2;
+}
+
+/* Amount */
+.amount {
+  color: #1677ff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Booking ID */
+.bookingId {
+  color: #666;
+}
+
+/* Empty state */
+.emptyBookingContainer {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
 /* Responsive */
 
 @media (max-width: 768px) {

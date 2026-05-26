@@ -10,3 +10,12 @@ export const seatBooking = async (payload) =>{
         return error.response;
     }
 }
+
+export const GetAllBookings = async (userId) => {
+  try {
+    const response = await axiosInstance.post("/api/bookings/get-all-bookings", {userId});
+    return response.data;
+  } catch (err) {
+    return err.response;
+  }
+};

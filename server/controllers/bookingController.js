@@ -29,4 +29,40 @@ const seatBooking = async (req, res, next) => {
   }
 };
 
-module.exports = { seatBooking };
+const getAllBookings = async (req, res, next) => {
+  try {
+    const userId = req.body.userId;
+
+    const bookings = await Booking.find({ user: userId })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "show",
+        populate: {
+          path: "movie",
+          model: "movies",
+        },
+      })
+      .populate({
+        path: "show",
+        populate: {
+          path: "theatre",
+          model: "theatres",
+        },
+      });
+    res.send({
+      success: true,
+      message: "Bookings Fetched",
+      data: bookings,
+    });
+  } catch (error) {
+  return res.status(500).send({
+    success: false,
+    message: error.message,
+  });
+}
+}
+
+module.exports = { seatBooking, getAllBookings };
