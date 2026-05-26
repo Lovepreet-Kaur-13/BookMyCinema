@@ -7,6 +7,7 @@ import moment from "moment";
 import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { MakePayment } from "../../api/payments";
+import { seatBooking } from "../../api/bookings";
 
 
 const BookShow = () => {
@@ -20,6 +21,30 @@ const BookShow = () => {
   const elements = useElements();
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
+
+  const Booking= async (transactionId) => {
+    try {
+      dispatch(ShowLoading());
+
+      const response = await seatBooking({
+        show: params.id,
+        transactionId,
+        seats: selectedSeats,
+        user: user._id,
+      });
+
+      if (response.success) {
+        message.success("Seats booked successfully!");
+        navigate("/myBookings");
+      } else {
+        message.warning(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      dispatch(HideLoading());
+    }
+  };
 
   const handlePayment = async () => {
     if (!stripe || !elements) {
@@ -51,10 +76,9 @@ const BookShow = () => {
         return;
       }
 
-      const clientSecret =
-        response.clientSecret || response.data?.clientSecret;
+      const clientSecret = response.clientSecret || response.data?.clientSecret;
 
-      const result = await stripe.confirmCardPayment(clientSecret, {
+      const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
           billing_details: {
@@ -64,14 +88,14 @@ const BookShow = () => {
         },
       });
 
-      if (result.error) {
-        message.error(result.error.message);
+      if (error) {
+        message.error(error.message);
         return;
       }
 
-      if (result.paymentIntent.status === "succeeded") {
+      if (paymentIntent.status === "succeeded") {
+        await Booking(paymentIntent.id);
         message.success("Payment successful!");
-        navigate("/profile");
       }
     } catch (err) {
       console.error(err);

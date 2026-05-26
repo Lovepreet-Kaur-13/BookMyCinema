@@ -11,6 +11,7 @@ import Partner from './pages/Partner';
 import UserProfile from './pages/UserProfile';
 import SingleMovie from './pages/Home/SingleMovie';
 import BookShow from './pages/Home/BookShow';
+import MyBookings from "./pages/Home/MyBookings";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -36,6 +37,11 @@ function App() {
           <Route path="/partner" element={
             <ProtectedRoute>
               <Partner />
+            </ProtectedRoute>
+          } />
+          <Route path="/myBookings" element={
+            <ProtectedRoute>
+              <MyBookings />
             </ProtectedRoute>
           } />
           <Route path="/profile" element={
