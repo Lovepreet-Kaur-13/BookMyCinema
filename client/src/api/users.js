@@ -31,3 +31,21 @@ export const GetCurrentUser = async () =>{
     }
 }
 
+export const ForgotPasswrd = async (values) => {
+  try {
+    const response = await axiosInstance.post("/api/users/forgot-password", values);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const ResetPasswrd = async (values) => {
+  try {
+    const response = await axiosInstance.post("/api/users/reset-password", values);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+

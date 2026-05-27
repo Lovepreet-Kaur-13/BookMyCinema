@@ -1,33 +1,33 @@
-import {Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/users";
 
 
-const Login = () =>{
+const Login = () => {
     const navigate = useNavigate();
-     const onFinish = async(values) =>{
-        try{
+    const onFinish = async (values) => {
+        try {
             const response = await LoginUser(values);
-            if(response.success){
+            if (response.success) {
                 message.success(response.message);
                 localStorage.setItem("token", response.data);
                 navigate("/");
             }
-            else{
+            else {
                 message.error(response.message);
             }
-        } catch(error){
+        } catch (error) {
             message.error(error.message);
         }
     }
-      return (
+    return (
         <div className="auth-page">
             <div className="auth-card">
                 <h2 className="auth-title">
                     Login to BookMyCinema
                 </h2>
                 <Form layout="vertical"
-                onFinish={onFinish}>
+                    onFinish={onFinish}>
                     <Form.Item
                         label="Email"
                         name="email"
@@ -58,7 +58,10 @@ const Login = () =>{
                         </Button>
                     </Form.Item>
                     <div className="auth-footer">
-                        New User? <Link to="/register">Register here</Link>
+                        New User? <Link to="/register">Register Here</Link>
+                    </div>
+                    <div className="auth-footer">
+                        Forgot Password ? <Link to="/forgot-password">Click Here</Link>
                     </div>
                 </Form>
             </div>

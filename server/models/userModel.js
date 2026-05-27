@@ -19,7 +19,13 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'user', 'partner'],
         required: true,
         default: 'user'
-    }
+    },
+    otp:{
+        type: String,
+    },
+    otpExpiry:{
+        type: Date,
+    },
 
 }, { timestamps: true });
 
