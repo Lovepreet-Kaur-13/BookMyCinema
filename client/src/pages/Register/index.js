@@ -1,13 +1,15 @@
 import { Form, Input, Button, message, Radio } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../api/users";
 
 const Register = () => {
+    const navigate = useNavigate();
     const onFinish = async (values) => {
         try {
             const response = await RegisterUser(values);
             if (response.success) {
                 message.success(response.message);
+                navigate("/login");
             }
             else {
                 message.error(response.message);
