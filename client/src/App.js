@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import store from './redux/store';
 import Admin from './pages/Admin';
 import Partner from './pages/Partner';
-import UserProfile from './pages/UserProfile';
+import UserProfile from './pages/UserProfile/index';
 import SingleMovie from './pages/Home/SingleMovie';
 import BookShow from './pages/Home/BookShow';
 import MyBookings from "./pages/Home/MyBookings";

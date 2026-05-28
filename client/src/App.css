@@ -48,6 +48,25 @@
   font-size: 14px;
 }
 
+/* USER PROFILE */
+
+.profile-role {
+  display: inline-block;
+  background: #4f46e5;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.profile-email, .profile-id {
+  color: #6b7280;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
 .inner-container{
 max-width: 1000px;
 margin-inline: auto;
