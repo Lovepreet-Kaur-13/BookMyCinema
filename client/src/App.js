@@ -32,12 +32,12 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/admin" element={
-            <ProtectedRoute>
+            <ProtectedRoute role="admin">
               <Admin />
             </ProtectedRoute>
           } />
           <Route path="/partner" element={
-            <ProtectedRoute>
+            <ProtectedRoute role="partner">
               <Partner />
             </ProtectedRoute>
           } />
