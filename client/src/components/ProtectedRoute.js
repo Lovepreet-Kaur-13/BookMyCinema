@@ -55,6 +55,8 @@ const ProtectedRoute = ({ children, role }) => {
             else navigate("/");
         }
 
+        if (key == "bookings") navigate("/my-bookings");
+
         if (key === "profile") navigate("/profile");
 
         if (key === "logout") {
@@ -85,6 +87,16 @@ const ProtectedRoute = ({ children, role }) => {
                         : "User Profile",
             icon: <ProfileOutlined />,
         },
+        // Show only for users
+        ...(user?.role === "user"
+            ? [
+                {
+                    key: "bookings",
+                    label: "My Bookings",
+                    icon: <ProfileOutlined />,
+                },
+            ]
+            : []),
         {
             key: "logout",
             label: "Logout",

@@ -73,7 +73,10 @@ const loginUser = async (req, res) => {
     }
 
     // token generation
-    const token = jwt.sign({ userId: user._id },
+    const token = jwt.sign({
+      userId: user._id,
+      role: user.role
+    },
       process.env.JWT_SECRETKEY,
       { expiresIn: "1d" },
     )
@@ -95,7 +98,7 @@ const loginUser = async (req, res) => {
 
 const getCurrentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user).select("-password");
+    const user = await User.findById(req.user.userId).select("-password");
     res.status(200).send({
       success: true,
       message: "You are authorized",
@@ -145,7 +148,7 @@ const forgotPassword = async (req, res, next) => {
     console.log("Before sending email");
 
     //SEND EMAIL
-    await emailHelper( "otp.html",
+    await emailHelper("otp.html",
       user.email,
       {
         name: user.name,

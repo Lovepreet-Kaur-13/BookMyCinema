@@ -41,8 +41,8 @@ function App() {
               <Partner />
             </ProtectedRoute>
           } />
-          <Route path="/myBookings" element={
-            <ProtectedRoute>
+          <Route path="/my-bookings" element={
+            <ProtectedRoute role="user">
               <MyBookings />
             </ProtectedRoute>
           } />
@@ -59,7 +59,7 @@ function App() {
           <Route
             path="/book-show/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="user">
                 <Elements stripe={stripePromise}>
                   <BookShow />
                 </Elements>

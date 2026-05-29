@@ -4,11 +4,12 @@ import { GetMovieById } from "../../api/movies";
 import { message, Input, Divider, Row, Col, Card, Tag, Button } from "antd";
 import { GetAllTheatresByMovie } from "../../api/shows";
 import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { Table, Space } from "antd";
 
 function SingleMovie() {
+    const { user } = useSelector((state) => state.users);
     const [movie, setMovie] = useState(null);
     const [theatres, setTheatres] = useState([]);
     const [bookingMode, setBookingMode] = useState(false);
@@ -20,10 +21,10 @@ function SingleMovie() {
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
     const handleDate = (e) => {
-    const selectedDate = e.target.value;
-    setDate(selectedDate);
-    getAllTheatres(selectedDate);
-};
+        const selectedDate = e.target.value;
+        setDate(selectedDate);
+        getAllTheatres(selectedDate);
+    };
 
     const getData = async () => {
         try {
@@ -70,7 +71,7 @@ function SingleMovie() {
     useEffect(() => {
         if (!bookingMode) return;
         getAllTheatres(date);
-        
+
     }, [bookingMode, date]);
 
     const durationFormat = (duration) => {
@@ -175,6 +176,7 @@ function SingleMovie() {
                             <Button
                                 type="primary"
                                 danger
+                                disabled={user?.role !== "user"}
                                 onClick={() => setBookingMode(true)}
                             >
                                 🎟 Book Tickets

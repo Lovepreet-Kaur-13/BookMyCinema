@@ -35,7 +35,7 @@ const BookShow = () => {
 
       if (response.success) {
         message.success("Seats booked successfully!");
-        navigate("/myBookings");
+        navigate("/my-bookings");
       } else {
         message.warning(response.message);
       }

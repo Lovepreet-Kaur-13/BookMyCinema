@@ -19,6 +19,12 @@ const seatBooking = async (req, res, next) => {
       bookedSeats: updatedBookedSeats,
     });
 
+    res.send({
+      success: true,
+      message: "Payment Successful",
+      data: newBooking,
+    });
+
     // metaDataEmail
     const populatedBooking = await Booking.findById(newBooking._id)
       .populate({
@@ -66,11 +72,7 @@ const seatBooking = async (req, res, next) => {
       metaData
     );
 
-    res.send({
-      success: true,
-      message: "Payment Successful",
-      data: newBooking,
-    });
+
   } catch (error) {
     res.status(500);
     next(error);
