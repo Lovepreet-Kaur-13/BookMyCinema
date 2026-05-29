@@ -4,27 +4,34 @@ const emailHelper = require("../utils/emailHelper");
 
 const seatBooking = async (req, res, next) => {
   try {
+     const allBookings = await Booking.find({ show: req.body.show });
+
+    const bookedSeats = allBookings.flatMap(b => b.seats);
+
+    const alreadyBooked = req.body.seats.some(seat =>
+      bookedSeats.includes(seat)
+    );
+
+    if (alreadyBooked) {
+      return res.send({
+        success: false,
+        message: "These seats are already booked",
+      });
+    }
+
     const newBooking = new Booking(req.body);
 
     await newBooking.save();
 
-    const show = await Show.findById(req.body.show);
-
     const updatedBookedSeats = [
-      ...show.bookedSeats,
-      ...req.body.seats,
+      ...new Set([...bookedSeats, ...req.body.seats])
     ];
 
     await Show.findByIdAndUpdate(req.body.show, {
       bookedSeats: updatedBookedSeats,
     });
 
-    res.send({
-      success: true,
-      message: "Payment Successful",
-      data: newBooking,
-    });
-
+   
     // metaDataEmail
     const populatedBooking = await Booking.findById(newBooking._id)
       .populate({
@@ -71,6 +78,13 @@ const seatBooking = async (req, res, next) => {
       populatedBooking.user.email,
       metaData
     );
+
+     res.send({
+      success: true,
+      message: "Payment Successful",
+      data: newBooking,
+    });
+
 
 
   } catch (error) {

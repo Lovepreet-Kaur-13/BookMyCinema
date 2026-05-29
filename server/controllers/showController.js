@@ -22,7 +22,10 @@ const addShow = async (req, res) => {
 // Get all shows by theatre
 const getAllShowsByTheatre = async (req, res) => {
     try {
-        const shows = await Show.find({ theatre: req.body.theatreId }).populate("movie");
+        const shows = await Show.find({ theatre: req.body.theatreId }).
+        populate("movie")
+        .populate("theatre");
+        
         res.status(200).send({
             success: true,
             message: "All shows fetched",
