@@ -5,6 +5,8 @@ const app = express();
 // LOAD env VARIABES to process.env
 require("dotenv").config();
 
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 const connectDB = require("./config/db");
 const userRouter = require("./routes/userRoutes");
 const movieRouter = require("./routes/movieRoutes");
@@ -15,6 +17,19 @@ const bookingRouter = require("./routes/bookingRoutes");
 
 // MIDDLEWARE TO PARSE JSON
 app.use(express.json());
+
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,  // 15 minutes
+    max:100,
+    message: "Too many requests from this IP, Please try again after 15 minutes",
+})
+
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}));
+
+// APPLY RATE LIMITER TO ALL REQUESTS
+app.use("/api/", apiLimiter);
 
 //ROUTES
 app.use("/api/users" , userRouter);
