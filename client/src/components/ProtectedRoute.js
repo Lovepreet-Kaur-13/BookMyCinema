@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { GetCurrentUser } from "../api/users";
 import { SetUser } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import {
     HomeOutlined,
     ProfileOutlined,
     LogoutOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Layout, Menu} from "antd";
 
 const ProtectedRoute = ({ children, role }) => {
     const { user } = useSelector((state) => state.users);
@@ -52,17 +52,17 @@ const ProtectedRoute = ({ children, role }) => {
         if (key === "home") {
             if (user?.role === "admin") navigate("/admin");
             else if (user?.role === "partner") navigate("/partner");
-            else navigate("/");
+            else navigate("/home");
         }
 
-        if (key == "bookings") navigate("/my-bookings");
+        if (key === "bookings") navigate("/my-bookings");
 
         if (key === "profile") navigate("/profile");
 
         if (key === "logout") {
             localStorage.removeItem("token");
             dispatch(SetUser(null));
-            navigate("/login");
+            navigate("/");
         }
     };
 
@@ -104,7 +104,7 @@ const ProtectedRoute = ({ children, role }) => {
         },
     ];
 
-    const { Header } = Layout;
+    const { Header, Footer } = Layout;
 
     return (
         user && (
@@ -122,7 +122,7 @@ const ProtectedRoute = ({ children, role }) => {
                 >
                     <h3
                         style={{ color: "white", margin: 0, cursor: "pointer" }}
-                        onClick={() => navigate("/")}
+                        onClick={() => navigate("/home")}
                     >
                         Book My Cinema
                     </h3>
@@ -140,12 +140,23 @@ const ProtectedRoute = ({ children, role }) => {
                     />
                 </Header>
 
-                <div style={{ padding: 20, minHeight: 380, background: "#fff" }}>
+                <div style={{ minHeight: 380, background: "#fff" }}>
                     {children}
                 </div>
+                <Footer
+                  style={{
+    textAlign: "center",
+    backgroundColor: "#001529",
+    color: "white",
+    width: "100%",
+  }}
+                >
+                    © 2026 Book My Cinema | Created By Lovepreet Kaur Khela
+                </Footer>
             </Layout>
         )
     );
 };
 
 export default ProtectedRoute;
+

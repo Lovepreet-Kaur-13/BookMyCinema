@@ -18,7 +18,10 @@ const Admin = () => {
         }
     ]
     return (
-        <div style={{ padding: "0px 20px" }}>
+        <div style={{ padding: "10px 40px",
+            minHeight:"100vh",
+            paddingBottom:"80px"
+        }}>
             <Tabs items={tabItems} />
         </div>
     );

@@ -154,6 +154,7 @@ const MovieList = () => {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: "20px",
+                      
                     }}
                 >
                     <h2 style={{ margin: 0 }}>Movie List</h2>

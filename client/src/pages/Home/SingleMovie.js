@@ -8,16 +8,27 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { Table, Space } from "antd";
 
+
 function SingleMovie() {
     const { user } = useSelector((state) => state.users);
     const [movie, setMovie] = useState(null);
     const [theatres, setTheatres] = useState([]);
     const [bookingMode, setBookingMode] = useState(false);
 
+    const availableDates = [
+  ...new Set(
+    theatres
+      .flatMap(t => t.showsOfThisTheatres || [])
+      .map(s => moment(s.date).format("YYYY-MM-DD"))
+  )
+];
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const params = useParams();
 
+    
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
     const handleDate = (e) => {
@@ -163,7 +174,7 @@ function SingleMovie() {
                         <p>
                             <b>Duration:</b> {durationFormat(movie.duration)}
                         </p>
-
+                         
                         <Divider />
 
                         {/* TAGS */}
@@ -198,6 +209,7 @@ function SingleMovie() {
                     </div>
                 </Card>
             )}
+            
 
             {/* ================= EMPTY STATE ================= */}
             {bookingMode && theatres.length === 0 && (

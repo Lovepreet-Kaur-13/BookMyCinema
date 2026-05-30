@@ -12,7 +12,10 @@ const Partner = () =>{
     ];
     return (
         <>
-            <Tabs style={{ padding: "0 20px" }}
+            <Tabs style={{ padding: "10px 40px",
+                minHeight:"100vh",
+                paddingBottom:"80px"
+            }}
             items={items} />
         </>
     );

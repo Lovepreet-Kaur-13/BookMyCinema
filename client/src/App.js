@@ -16,6 +16,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ForgotPassword from './pages/Login/ForgotPassword';
 import ResetPassword from './pages/Login/ResetPassword';
+import LandingPage from './pages/Landing/LandingPage';
 
 const stripePromise = loadStripe(
   process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
@@ -26,7 +27,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
+          <Route path="/home" element={
             <ProtectedRoute>
               <Home />
             </ProtectedRoute>
@@ -66,6 +67,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/" element ={<LandingPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
