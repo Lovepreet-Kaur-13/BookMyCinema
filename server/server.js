@@ -5,6 +5,7 @@ const app = express();
 // LOAD env VARIABES to process.env
 require("dotenv").config();
 
+const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const connectDB = require("./config/db");
@@ -14,6 +15,15 @@ const theatreRouter = require("./routes/theatreRoutes");
 const showRouter = require("./routes/showRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
+
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://your-app.netlify.app"
+  ],
+  credentials: true
+}));
 
 // MIDDLEWARE TO PARSE JSON
 app.use(express.json());
