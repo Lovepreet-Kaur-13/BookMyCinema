@@ -76,8 +76,7 @@
 .inner-container {
   min-height: 100vh;
   padding-bottom: 80px;
-  margin: auto;
-
+ 
 }
 
 .mb-10 {
@@ -269,7 +268,7 @@
 /* Poster */
 .poster {
   width: 170px;
-  height: 250px;
+  height: 280px;
   object-fit: cover;
   border-radius: 14px;
 }

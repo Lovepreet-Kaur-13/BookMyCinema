@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetMovieById } from "../../api/movies";
-import { message, Input, Divider, Row, Col, Card, Tag, Button } from "antd";
+import { message, Input, Divider, Card, Tag, Button } from "antd";
 import { GetAllTheatresByMovie } from "../../api/shows";
 import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,14 +14,6 @@ function SingleMovie() {
     const [movie, setMovie] = useState(null);
     const [theatres, setTheatres] = useState([]);
     const [bookingMode, setBookingMode] = useState(false);
-
-    const availableDates = [
-  ...new Set(
-    theatres
-      .flatMap(t => t.showsOfThisTheatres || [])
-      .map(s => moment(s.date).format("YYYY-MM-DD"))
-  )
-];
 
 
     const navigate = useNavigate();
