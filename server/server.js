@@ -20,7 +20,7 @@ const bookingRouter = require("./routes/bookingRoutes");
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://your-app.netlify.app"
+    "https://bookmycinemaproject.netlify.app"
   ],
   credentials: true
 }));
