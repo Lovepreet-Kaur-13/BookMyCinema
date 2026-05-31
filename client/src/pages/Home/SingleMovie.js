@@ -182,7 +182,7 @@ function SingleMovie() {
                                 disabled={user?.role !== "user"}
                                 onClick={() => setBookingMode(true)}
                             >
-                                🎟 Book Tickets
+                             🎫 Book Tickets
                             </Button>
                         ) : (
                             <div style={{ display: "flex", gap: 12, alignItems: "center" }}>

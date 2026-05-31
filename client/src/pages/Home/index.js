@@ -171,7 +171,7 @@ const Home = () => {
                       );
                     }}
                   >
-                    🎟 Book Now
+                     🎫 Book Now
                   </Button>
                 </div>
               </Col>
