@@ -4,7 +4,7 @@ const emailHelper = require("../utils/emailHelper");
 
 const seatBooking = async (req, res, next) => {
   try {
-     const allBookings = await Booking.find({ show: req.body.show });
+    const allBookings = await Booking.find({ show: req.body.show });
 
     const bookedSeats = allBookings.flatMap(b => b.seats);
 
@@ -20,7 +20,6 @@ const seatBooking = async (req, res, next) => {
     }
 
     const newBooking = new Booking(req.body);
-
     await newBooking.save();
 
     const updatedBookedSeats = [
@@ -31,8 +30,6 @@ const seatBooking = async (req, res, next) => {
       bookedSeats: updatedBookedSeats,
     });
 
-   
-    // metaDataEmail
     const populatedBooking = await Booking.findById(newBooking._id)
       .populate({
         path: "user",
@@ -69,23 +66,31 @@ const seatBooking = async (req, res, next) => {
       date: formattedDate,
       time: populatedBooking.show.time,
       seats: populatedBooking.seats,
-      amount: populatedBooking.seats.length * populatedBooking.show.ticketPrice,
+      amount:
+        populatedBooking.seats.length *
+        populatedBooking.show.ticketPrice,
       transactionId: populatedBooking.transactionId,
     };
 
-    await emailHelper(
-      "ticketTemplate.html",
-      populatedBooking.user.email,
-      metaData
-    );
-
-     res.send({
+    //  SEND RESPONSE FIRST (FIX)
+    res.send({
       success: true,
       message: "Payment Successful",
       data: newBooking,
     });
 
-
+    // SEND EMAIL AFTER RESPONSE 
+    setImmediate(async () => {
+      try {
+        await emailHelper(
+          "ticketTemplate.html",
+          populatedBooking.user.email,
+          metaData
+        );
+      } catch (err) {
+        console.log("Email failed:", err);
+      }
+    });
 
   } catch (error) {
     res.status(500);
