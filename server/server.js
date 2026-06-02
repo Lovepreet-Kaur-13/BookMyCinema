@@ -1,9 +1,12 @@
 const express = require("express");
 
 const app = express();
+app.set('trust proxy', 1);
 
 // LOAD env VARIABES to process.env
 require("dotenv").config();
+
+
 
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
