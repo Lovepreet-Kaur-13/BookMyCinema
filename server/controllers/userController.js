@@ -115,6 +115,7 @@ const getCurrentUser = async (req, res) => {
 
 
 const forgotPassword = async (req, res, next) => {
+  console.log("🔥 FORGOT PASSWORD CONTROLLER HIT");
   try {
     const { email } = req.body;
     if (email == undefined) {
@@ -162,7 +163,7 @@ const forgotPassword = async (req, res, next) => {
       message: "Otp has been sent",
     });
   } catch (err) {
-    res.status(500), next(err);
+    next(err);
   }
 };
 

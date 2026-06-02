@@ -1,47 +1,61 @@
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 const path = require("path");
 const fs = require("fs");
 
-const transport = nodemailer.createTransport({
-     host: 'smtp.gmail.com',
-     port: 587,
-     secure: false,
-     auth: {
-       user: process.env.GMAIL_APP_USER,
-       pass: process.env.GMAIL_APP_PASSWORD,
-     },
-     tls: {
-       rejectUnauthorized: false
-     },
-     resolveIpVersion: 'ipv4' // Force IPv4
-   });
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+
+// Replace placeholders like #{name}
 const replaceContent = (content, metaData) => {
-  return Object.keys(metaData).reduce((updatedContent, key) => {
-    return updatedContent.replace(new RegExp(`#{${key}}`, "g"), metaData[key]);
+  return Object.keys(metaData || {}).reduce((updatedContent, key) => {
+    return updatedContent.replace(
+      new RegExp(`#{${key}}`, "g"),
+      metaData[key]
+    );
   }, content);
 };
 
-const emailHelper = async (templateName, receiverName, metaData) => {
+const emailHelper = async (templateName, receiverEmail, metaData = {}) => {
   try {
-    const templatePath = path.join(__dirname, "email_templates", templateName);
+  
+    const templatePath = path.join(
+      __dirname,
+      "email_templates",
+      templateName
+    );
+
+    // Read template
     let content = await fs.promises.readFile(templatePath, "utf-8");
+
+    // Replace variables
     content = replaceContent(content, metaData);
+
     const emailDetails = {
-      to: receiverName,
-      from: process.env.GMAIL_APP_USER,
+      to: receiverEmail,
+      from: process.env.EMAIL_FROM, // must be verified in SendGrid
       subject: "Mail from Book My Cinema APP",
       html: content,
     };
-    await transport.sendMail(emailDetails);
-    console.log("email sent");
+
+   
+    console.log("ABOUT TO SEND EMAIL...");
+
+    const response = await sgMail.send(emailDetails);
+
+    console.log("Email sent successfully");
+   
+
   } catch (err) {
+    console.error("MAIL ERROR OCCURRED");
+
     if (err.code === "ENOENT") {
       console.error("Template file not found:", err.message);
-    } else if (err.response && err.response.body) {
-      console.error("Error sending email:", err.response.body);
-    } else {
-      console.error("Error occurred:", err.message);
+    } 
+    else if (err.response?.body) {
+      console.error("SendGrid Response Error:", JSON.stringify(err.response.body, null, 2));
+    } 
+    else {
+      console.error("Error:", err.message);
     }
   }
 };

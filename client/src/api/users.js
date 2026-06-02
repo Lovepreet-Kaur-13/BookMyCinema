@@ -33,6 +33,7 @@ export const GetCurrentUser = async () =>{
 }
 
 export const ForgotPasswrd = async (values) => {
+  console.log("Forgot password API called");
   try {
     const response = await axiosInstance.post("/api/users/forgot-password", values);
     return response.data;
