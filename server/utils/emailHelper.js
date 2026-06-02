@@ -3,14 +3,18 @@ const path = require("path");
 const fs = require("fs");
 
 const transport = nodemailer.createTransport({
-  service: "gmail",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_APP_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+     host: 'smtp.gmail.com',
+     port: 587,
+     secure: false,
+     auth: {
+       user: process.env.GMAIL_APP_USER,
+       pass: process.env.GMAIL_APP_PASSWORD,
+     },
+     tls: {
+       rejectUnauthorized: false
+     },
+     resolveIpVersion: 'ipv4' // Force IPv4
+   });
 
 const replaceContent = (content, metaData) => {
   return Object.keys(metaData).reduce((updatedContent, key) => {
