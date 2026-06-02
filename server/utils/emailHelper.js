@@ -17,7 +17,7 @@ const replaceContent = (content, metaData) => {
 
 const emailHelper = async (templateName, receiverEmail, metaData = {}) => {
   try {
-  
+
     const templatePath = path.join(
       __dirname,
       "email_templates",
@@ -32,28 +32,31 @@ const emailHelper = async (templateName, receiverEmail, metaData = {}) => {
 
     const emailDetails = {
       to: receiverEmail,
-      from: process.env.EMAIL_FROM, // must be verified in SendGrid
+      from: {
+        email: process.env.EMAIL_FROM,
+        name: "Book My Cinema"
+      },
       subject: "Mail from Book My Cinema APP",
       html: content,
     };
 
-   
+
     console.log("ABOUT TO SEND EMAIL...");
 
     const response = await sgMail.send(emailDetails);
 
     console.log("Email sent successfully");
-   
+
 
   } catch (err) {
     console.error("MAIL ERROR OCCURRED");
 
     if (err.code === "ENOENT") {
       console.error("Template file not found:", err.message);
-    } 
+    }
     else if (err.response?.body) {
       console.error("SendGrid Response Error:", JSON.stringify(err.response.body, null, 2));
-    } 
+    }
     else {
       console.error("Error:", err.message);
     }
