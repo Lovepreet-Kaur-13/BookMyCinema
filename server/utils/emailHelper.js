@@ -18,6 +18,10 @@ const replaceContent = (content, metaData) => {
 const emailHelper = async (templateName, receiverEmail, metaData = {}) => {
   try {
 
+    if (!process.env.EMAIL_FROM) {
+      throw new Error("EMAIL_FROM is not set in environment variables");
+    }
+
     const templatePath = path.join(
       __dirname,
       "email_templates",
@@ -42,6 +46,10 @@ const emailHelper = async (templateName, receiverEmail, metaData = {}) => {
 
 
     console.log("ABOUT TO SEND EMAIL...");
+
+    if (!process.env.EMAIL_FROM) {
+      throw new Error("EMAIL_FROM is not set in environment variables");
+    }
 
     const response = await sgMail.send(emailDetails);
 
