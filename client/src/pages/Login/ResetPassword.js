@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
 import { ResetPasswrd } from "../../api/users";
@@ -17,7 +16,9 @@ const ResetPassword = () => {
 
     try {
       dispatch(ShowLoading());
+
       const response = await ResetPasswrd(values);
+
       if (response.success) {
         message.success(response.message);
         navigate("/login");
@@ -26,69 +27,64 @@ const ResetPassword = () => {
         navigate("/forgot-password");
       }
     } catch (error) {
-      message.error(error.message);
+      message.error(error?.message || "Something went wrong");
     } finally {
       dispatch(HideLoading());
     }
   };
-  return (
-    <>
-      <div className="auth-page">
-        <div className="auth-card">
-          <h1 className="auth-title">Reset Password</h1>
-          <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item
-              label="OTP"
-              htmlFor="otp"
-              name="otp"
-              className="d-block"
-              rules={[{ required: true, message: "OTP is required" }]}
-            >
-              <Input
-                id="otp"
-                type="number"
-                placeholder="Enter your OTP"
-              ></Input>
-            </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              className="d-block"
-              rules={[{ required: true, message: "Password is required" }]}
-            >
-              <Input.Password
-                id="password"
-                type="password"
-                placeholder="Enter New Password"
-              ></Input.Password>
-            </Form.Item>
-            <Form.Item
-              label="Confirm Password"
-              name="confirmPassword"
-              className="d-block"
-              rules={[{ required: true, message: "Password is required" }]}
-            >
-              <Input.Password
-                id="password"
-                type="password"
-                placeholder="Confirm Password"
-              ></Input.Password>
-            </Form.Item>
-            <Form.Item className="d-block">
-              <Button
-                type="primary"
-                block
-                htmlType="submit"
-                style={{ fontSize: "1rem", fontWeight: "600", padding: "18px" }}
-              >
-                RESET PASSWORD
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+
+        <h2 className="auth-title">Reset Password</h2>
+
+        <Form layout="vertical" onFinish={onFinish} size="large">
+
+          {/* OTP */}
+          <Form.Item
+            label="OTP"
+            name="otp"
+            rules={[
+              { required: true, message: "OTP is required" },
+            ]}
+          >
+            <Input placeholder="Enter your OTP" />
+          </Form.Item>
+
+          {/* New Password */}
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              { required: true, message: "Password is required" },
+            ]}
+          >
+            <Input.Password placeholder="Enter new password" />
+          </Form.Item>
+
+          {/* Confirm Password */}
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            rules={[
+              { required: true, message: "Please confirm password" },
+            ]}
+          >
+            <Input.Password placeholder="Confirm password" />
+          </Form.Item>
+
+          {/* Submit */}
+          <Form.Item>
+            <Button type="primary" block htmlType="submit">
+              RESET PASSWORD
+            </Button>
+          </Form.Item>
+
+        </Form>
+
       </div>
-    </>
+    </div>
   );
 };
 

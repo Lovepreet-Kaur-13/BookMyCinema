@@ -1,3 +1,130 @@
+/* LOGIN PAGE REGISTE PAGE RESET PAGE AND FORGOT PAGE CSS*/
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f1f1f;
+  line-height: 1.3;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.auth-footer a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Ant Design tweaks */
+.auth-card .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.auth-card .ant-input,
+.auth-card .ant-input-password {
+  border-radius: 8px;
+}
+
+/* Button styling */
+.auth-card .ant-btn {
+  height: 44px;
+  font-size: 16px !important;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Radio group (Register page only) */
+.auth-card .ant-radio-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.auth-card .ant-radio-wrapper {
+  font-size: 14px;
+}
+
+/*RESPONSIVE */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .auth-card {
+    max-width: 380px;
+    padding: 26px;
+  }
+
+  .auth-title {
+    font-size: 24px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .auth-title {
+    font-size: 22px;
+  }
+
+  .auth-footer {
+    font-size: 13px;
+  }
+
+  .auth-page {
+    padding: 12px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .auth-card {
+    padding: 16px;
+  }
+
+  .auth-title {
+    font-size: 20px;
+  }
+}
+
+
+
+
+
+
+
 .App {
   text-align: center;
 }
@@ -19,39 +146,7 @@
 }
 
 
-.auth-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #f3f4f6;
 
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-}
-
-.auth-title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 26px;
-  font-weight: 700;
-  color: #1f1f1f;
-}
-
-.auth-footer {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 14px;
-}
 
 /* USER PROFILE */
 
