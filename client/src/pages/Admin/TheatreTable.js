@@ -5,129 +5,123 @@ import { useDispatch } from "react-redux";
 import { message, Button, Table } from "antd";
 
 const TheatresTable = () => {
-    const [theatres, setTheatres] = useState([]);
-    const dispatch = useDispatch();
+  const [theatres, setTheatres] = useState([]);
+  const dispatch = useDispatch();
 
-    // GET DATA
-    const getData = async () => {
-        try {
-            dispatch(ShowLoading());
+  // GET DATA
+  const getData = async () => {
+    try {
+      dispatch(ShowLoading());
 
-            const response = await GetAllTheatresForAdmin();
+      const response = await GetAllTheatresForAdmin();
 
-            if (response.success) {
-                const allTheatres = response.data;
+      if (response.success) {
+        setTheatres(
+          response.data.map((item) => ({
+            ...item,
+            key: item._id,
+          }))
+        );
+      } else {
+        message.error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      dispatch(HideLoading());
+    }
+  };
 
-                setTheatres(
-                    allTheatres.map((item) => ({
-                        ...item,
-                        key: `theatre-${item._id}`,
-                    }))
-                );
-            } else {
-                message.error(response.message);
-            }
+  // APPROVE / BLOCK
+  const handleStatusChange = async (theatre) => {
+    try {
+      dispatch(ShowLoading());
 
-        } catch (err) {
-            message.error(err.message);
-        } finally {
-            dispatch(HideLoading());
-        }
-    };
+      const response = await UpdateTheatre({
+        theatreId: theatre._id,
+        isActive: !theatre.isActive,
+      });
 
-    // APPROVE / BLOCK THEATRE
-    const handleStatusChange = async (theatre) => {
-        try {
-            dispatch(ShowLoading());
-
-            const values = {
-                theatreId: theatre._id,
-                isActive: !theatre.isActive,
-            };
-
-            const response = await UpdateTheatre(values);
-
-            if (response.success) {
-                message.success(response.message);
-                getData(); // refresh list
-            } else {
-                message.error(response.message);
-            }
-
-        } catch (err) {
-            message.error(err.message);
-        } finally {
-            dispatch(HideLoading());
-        }
-    };
-
-    // TABLE COLUMNS
-    const columns = [
-        {
-            title: "Name",
-            dataIndex: "name",
-        },
-        {
-            title: "Address",
-            dataIndex: "address",
-        },
-        {
-            title: "Owner",
-            render: (_, data) => data.owner?.name || "N/A",
-        },
-        {
-            title: "Phone Number",
-            dataIndex: "phone",
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-        },
-        {
-            title: "Status",
-            render: (_, data) =>
-                data.isActive ? "Approved" : "Pending / Blocked",
-        },
-        {
-            title: "Action",
-            render: (_, data) => (
-                <div style={{ display: "flex", gap: "10px" }}>
-                    {data.isActive ? (
-                        <Button
-                            danger
-                            onClick={() => handleStatusChange(data)}
-                        >
-                            Block
-                        </Button>
-                    ) : (
-                        <Button
-                            type="primary"
-                            onClick={() => handleStatusChange(data)}
-                        >
-                            Approve
-                        </Button>
-                    )}
-                </div>
-            ),
-        },
-    ];
-
-    useEffect(() => {
+      if (response.success) {
+        message.success(response.message);
         getData();
-    }, []);
+      } else {
+        message.error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      dispatch(HideLoading());
+    }
+  };
 
-    return (
-        <div
-            style={{
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "12px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-            }}
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+    },
+    {
+      title: "Owner",
+      render: (_, data) => data.owner?.name || "N/A",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Status",
+      render: (_, data) => (
+        <span
+          className={
+            data.isActive ? "text-green-600 font-medium" : "text-red-500"
+          }
         >
-            <Table dataSource={theatres} columns={columns} />
+          {data.isActive ? "Approved" : "Pending / Blocked"}
+        </span>
+      ),
+    },
+    {
+      title: "Action",
+      render: (_, data) => (
+        <div className="flex gap-2">
+          {data.isActive ? (
+            <Button danger onClick={() => handleStatusChange(data)}>
+              Block
+            </Button>
+          ) : (
+            <Button type="primary" onClick={() => handleStatusChange(data)}>
+              Approve
+            </Button>
+          )}
         </div>
-    );
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <div className="w-full bg-white p-2 md:p-5 rounded-xl shadow">
+
+      <Table
+        dataSource={theatres}
+        columns={columns}
+        pagination={{ pageSize: 5 }}
+        scroll={{ x: "max-content" }}
+      />
+
+    </div>
+  );
 };
 
 export default TheatresTable;
