@@ -1,14 +1,12 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, message } from "antd";
-import { ShowLoading, HideLoading } from '../../redux/loaderSlice';
-import { GetAllMovies } from '../../api/movies';
+import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
+import { GetAllMovies } from "../../api/movies";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import MovieForm from "./MovieForm";
 import DeleteMovieModal from "./DeleteMovieModal";
-
 
 const MovieList = () => {
     const [movies, setMovies] = useState([]);
@@ -16,8 +14,8 @@ const MovieList = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [formType, setFormType] = useState("add");
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
 
     const getData = async () => {
         try {
@@ -25,25 +23,32 @@ const MovieList = () => {
 
             const response = await GetAllMovies();
 
-            const allMovies = response.data;
-
-           if(response.success){
-             setMovies(
-                allMovies.map((item) => ({
-                    ...item,
-                    key: item._id,
-                }))
-            );
-           }
-           else {
-            message.error(response.message);
-        }
+            if (response.success) {
+                setMovies(
+                    response.data.map((item) => ({
+                        ...item,
+                        key: item._id,
+                    }))
+                );
+            } else {
+                message.error(response.message);
+            }
         } catch (error) {
             console.log(error);
             message.error("Failed to fetch movies");
         } finally {
             dispatch(HideLoading());
         }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    const handleAdd = () => {
+        setSelectedMovie(null);
+        setFormType("add");
+        setIsModalOpen(true);
     };
 
     const handleEdit = (data) => {
@@ -57,123 +62,85 @@ const MovieList = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const handleAdd = () => {
-        setIsModalOpen(true);
-        setFormType("add");
-
-
-    };
-
-    useEffect(() => {
-        getData();
-    }, []);
-
-    const tableHeadings = [
+    const columns = [
         {
             title: "Poster",
             dataIndex: "poster",
-            render: (text, data) => {
-                return (
-                    <img src={data.poster} alt="movie-poster" width="75" height="110"
-                        style={{
-                            borderRadius: "8px",
-                            objectFit: "cover"
-                        }} />
-                )
-            }
+            render: (_, data) => (
+                <img
+                    src={data.poster}
+                    alt="movie"
+                    className="w-10 h-14 md:w-16 md:h-24 rounded object-cover"
+                />
+            ),
         },
         {
             title: "Movie Name",
-            dataIndex: "title"
+            dataIndex: "title",
         },
         {
             title: "Description",
-            dataIndex: "description"
+            dataIndex: "description",
         },
         {
             title: "Duration",
             dataIndex: "duration",
-            render: (text, data) => {
-                const hours = Math.floor(data.duration / 60);
-                const minutes = data.duration % 60;
-                return `${hours}h ${minutes}m`;
+            render: (_, data) => {
+                const h = Math.floor(data.duration / 60);
+                const m = data.duration % 60;
+                return `${h}h ${m}m`;
             },
         },
         {
             title: "Genre",
-            dataIndex: "genre"
+            dataIndex: "genre",
         },
         {
             title: "Language",
-            dataIndex: "language"
+            dataIndex: "language",
         },
         {
-            title: "ReleaseDate",
+            title: "Release Date",
             dataIndex: "releaseDate",
-            render: (text, data) => {
-                return moment(data.releaseDate).format("MM-DD-YYYY");
-            },
-
+            render: (_, data) =>
+                moment(data.releaseDate).format("MM-DD-YYYY"),
         },
         {
             title: "Action",
-            render: (text, data) => {
-                return (
-                    <div style={{
-                        display: "flex",
-                        gap: "10px",
-                    }}>
-                        <Button type="default" onClick={() => handleEdit(data)}
-                        >
-                            <EditOutlined />
-                        </Button>
-                        <Button danger onClick={() => handleDelete(data)}
-                        >
-                            <DeleteOutlined />
-                        </Button>
-                    </div>
-                );
-            },
+            render: (_, data) => (
+                <div className="flex gap-2">
+                    <Button onClick={() => handleEdit(data)}>
+                        <EditOutlined />
+                    </Button>
+                    <Button danger onClick={() => handleDelete(data)}>
+                        <DeleteOutlined />
+                    </Button>
+                </div>
+            ),
         },
-
-    ]
+    ];
 
     return (
         <>
-            <div
-                style={{
-                    backgroundColor: "white",
-                    padding: "20px",
-                    borderRadius: "12px",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                }}
-            >
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "20px",
-                      
-                    }}
-                >
-                    <h2 style={{ margin: 0 }}>Movie List</h2>
-                    <Button
-                        type="primary"
-                        onClick={handleAdd}
-                    >
+            {/* MAIN CONTAINER */}
+            <div className="w-full bg-white rounded-xl shadow p-2 md:p-5">
+
+                {/* HEADER */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+                    <Button type="primary" onClick={handleAdd}>
                         Add Movie
                     </Button>
                 </div>
 
-                {/* TABLE */}
                 <Table
                     dataSource={movies}
-                    columns={tableHeadings}
+                    columns={columns}
                     pagination={{ pageSize: 5 }}
+                    scroll={{ x: "max-content" }}
                 />
             </div>
 
+            {/* MODALS */}
             {isModalOpen && (
                 <MovieForm
                     isModalOpen={isModalOpen}
@@ -196,6 +163,6 @@ const MovieList = () => {
             )}
         </>
     );
-}
+};
 
 export default MovieList;

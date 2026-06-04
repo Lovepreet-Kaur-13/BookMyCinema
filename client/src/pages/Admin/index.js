@@ -4,27 +4,24 @@ import MovieList from "./MovieList";
 import TheatreTable from "./TheatreTable";
 
 const Admin = () => {
+  const tabItems = [
+    {
+      key: "movies",
+      label: "Movies",
+      children: <MovieList />,
+    },
+    {
+      key: "theatres",
+      label: "Theatres",
+      children: <TheatreTable />,
+    },
+  ];
 
-    const tabItems = [
-        {
-            key: "movies",
-            label: "Movies",
-            children: <MovieList />
-        },
-        {
-            key: "theatres",
-            label: "Theatres",
-            children: <TheatreTable />
-        }
-    ]
-    return (
-        <div style={{ padding: "10px 40px",
-            minHeight:"100vh",
-            paddingBottom:"80px"
-        }}>
-            <Tabs items={tabItems} />
-        </div>
-    );
-}
+  return (
+    <div className="w-full px-2 sm:px-3 md:px-6 min-h-screen pb-20">
+      <Tabs items={tabItems} />
+    </div>
+  );
+};
 
 export default Admin;

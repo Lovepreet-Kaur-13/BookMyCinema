@@ -24,6 +24,7 @@ const stripePromise = loadStripe(
 
 function App() {
   return (
+    
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
