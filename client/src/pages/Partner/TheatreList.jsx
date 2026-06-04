@@ -99,7 +99,7 @@ const TheatreList = () => {
         {
             title: "Action",
             render: (_, data) => (
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className="flex flex-wrap gap-2">
 
                     {/* EDIT */}
                     <Button
@@ -134,37 +134,21 @@ const TheatreList = () => {
     return (
         <>
             {/* HEADER */}
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "16px",
-                }}
-            >
-                <h2 style={{ margin: 0 }}>Theatres</h2>
+            <div className="flex justify-between items-center gap-3 mb-4">
+                <h2 className="text-xl font-semibold m-0">Theatres List</h2>
 
-                <Button
-                    type="primary"
-                    onClick={handleAdd}
-                >
+                <Button type="primary" onClick={handleAdd}>
                     Add Theatre
                 </Button>
             </div>
 
             {/* TABLE */}
-            <div
-                style={{
-                    backgroundColor: "white",
-                    padding: "20px",
-                    borderRadius: "12px",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                }}
-            >
+            <div className="bg-white p-4 sm:p-5 rounded-xl shadow overflow-x-auto">
                 <Table
                     dataSource={theatres}
                     columns={columns}
                     pagination={{ pageSize: 5 }}
+                    scroll={{ x: "max-content" }}
                 />
             </div>
 

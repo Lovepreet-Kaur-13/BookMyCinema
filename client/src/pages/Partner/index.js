@@ -2,8 +2,8 @@ import React from "react";
 import TheatreList from "./TheatreList";
 import { Tabs } from "antd";
 
-const Partner = () =>{
-     const items = [
+const Partner = () => {
+    const items = [
         {
             key: "1",
             label: "Partner Dashboard",
@@ -12,11 +12,9 @@ const Partner = () =>{
     ];
     return (
         <>
-            <Tabs style={{ padding: "10px 40px",
-                minHeight:"100vh",
-                paddingBottom:"80px"
-            }}
-            items={items} />
+            <div className="w-full px-2 sm:px-3 md:px-6 min-h-screen pb-20">
+                <Tabs items={items} />
+            </div>
         </>
     );
 }
