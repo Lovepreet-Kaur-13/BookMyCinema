@@ -2,7 +2,7 @@
 
 A full-stack movie ticket booking application built using React, Node.js, Express, and MongoDB.
 
-This project allows users to browse movies, view theatres and shows, while theatre partners can manage theatres and schedule movie shows.
+This project demonstrate a online ticket booking platform like BookMyShow.It allows users to browse movies, select theatres, check show timings, view seat availability, make payment and book tickets conveniently. 
 
 ---
 
@@ -12,10 +12,14 @@ This project allows users to browse movies, view theatres and shows, while theat
 - JWT-based Authentication
 - Protected Routes
 - Admin Dashboard
+- Theatre Partner Dashboard
 - Movie Listings
 - Show Scheduling
+- Seat Layout
+- Make Payment using Stripe Test card
 - Redux State Management
 - Responsive Frontend UI
+- Confirmation email using Sendgrid
 
 ---
 
@@ -125,6 +129,9 @@ PORT=8081
 ---
 
 ## 📸 Screenshots
+
+- Landing Page
+ <img width="1320" height="579" alt="image" src="https://github.com/user-attachments/assets/3e8a83cb-ec26-4fb3-9e3c-6ece1b2ff8eb" />
 
 - Home Page
 - Login Page
