@@ -8,19 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { Table, Space } from "antd";
 
-
 function SingleMovie() {
     const { user } = useSelector((state) => state.users);
     const [movie, setMovie] = useState(null);
     const [theatres, setTheatres] = useState([]);
     const [bookingMode, setBookingMode] = useState(false);
 
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const params = useParams();
 
-    
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
     const handleDate = (e) => {
@@ -52,7 +49,6 @@ function SingleMovie() {
                 movie: params.id,
                 date,
             });
-            console.log(response);
 
             if (response.success) {
                 setTheatres(response.data);
@@ -70,17 +66,14 @@ function SingleMovie() {
         getData();
     }, []);
 
-    // fetch only when booking started
     useEffect(() => {
         if (!bookingMode) return;
         getAllTheatres(date);
-
     }, [bookingMode, date]);
 
     const durationFormat = (duration) => {
         const hours = Math.floor(duration / 60);
         const minutes = duration % 60;
-
         return `${hours}h ${minutes}m`;
     };
 
@@ -92,7 +85,9 @@ function SingleMovie() {
             render: (text, theatre) => (
                 <div>
                     <h3 style={{ margin: 0 }}>{theatre.name}</h3>
-                    <p style={{ margin: 0, color: "#888" }}>{theatre.address}</p>
+                    <p style={{ margin: 0, color: "#888" }}>
+                        {theatre.address}
+                    </p>
                 </div>
             ),
         },
@@ -104,7 +99,8 @@ function SingleMovie() {
                     {theatre.showsOfThisTheatres
                         .sort(
                             (a, b) =>
-                                moment(a.time, "HH:mm") - moment(b.time, "HH:mm")
+                                moment(a.time, "HH:mm") -
+                                moment(b.time, "HH:mm")
                         )
                         .map((show) => (
                             <Button
@@ -112,119 +108,131 @@ function SingleMovie() {
                                 type="primary"
                                 size="small"
                                 ghost
-                                onClick={() => navigate(`/book-show/${show._id}`)}
+                                onClick={() =>
+                                    navigate(`/book-show/${show._id}`)
+                                }
                                 style={{ borderRadius: 20 }}
                             >
-                                {moment(show.time, "HH:mm").format("hh:mm A")}
+                                {moment(show.time, "HH:mm").format(
+                                    "hh:mm A"
+                                )}
                             </Button>
                         ))}
                 </Space>
             ),
         },
     ];
+
     return (
         <div className="inner-container">
 
             {/* MOVIE SECTION */}
             {movie && (
                 <Card
-                    style={{
-                        maxWidth: 1100,
-                        margin: "0 auto",
-                        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                    }}
-                    bodyStyle={{
-                        display: "flex",
-                        gap: 20,
-
-                    }}
+                    className="max-w-5xl mx-auto shadow-md"
+                    bodyStyle={{ padding: "12px" }}
                 >
-                    {/* POSTER */}
-                    <img
-                        src={movie.poster}
-                        alt="poster"
-                        style={{
-                            width: 200,
-                            height: 300,
-                            objectFit: "cover",
-                            borderRadius: 12,
-                        }}
-                    />
+                    <div className="flex flex-wrap gap-4">
 
-                    {/* DETAILS */}
-                    <div style={{ flex: 1 }}>
+                        {/* POSTER */}
+                        <img
+                            src={movie.poster}
+                            alt={movie.title}
+                            className="w-28 h-40 sm:w-36 sm:h-52 rounded-lg object-cover flex-shrink-0"
+                        />
 
-                        <h2 style={{ marginBottom: 5 }}>{movie.title}</h2>
+                        {/* DETAILS */}
+                        <div className="flex-1 min-w-0">
+                            <h2 className="text-xl sm:text-2xl font-semibold mb-2">
+                                {movie.title}
+                            </h2>
 
-                        <p>
-                            <b>Genre:</b> {movie.genre}
-                        </p>
-                        <p>
-                            <b>Release Date:</b>{" "}
-                            {moment(movie.releaseDate).format("YYYY-MM-DD")}
-                        </p>
-                        <p>
-                            <b>Duration:</b> {durationFormat(movie.duration)}
-                        </p>
-                         
-                        <Divider />
+                            <p>
+                                <b>Genre:</b> {movie.genre}
+                            </p>
 
-                        {/* TAGS */}
-                        <div style={{ marginBottom: 15 }}>
-                            <Tag color="blue">{movie.language}</Tag>
-                        </div>
+                            <p>
+                                <b>Release Date:</b>{" "}
+                                {moment(movie.releaseDate).format("YYYY-MM-DD")}
+                            </p>
 
-                        {/* BOOKING */}
-                        {!bookingMode ? (
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={user?.role !== "user"}
-                                onClick={() => setBookingMode(true)}
-                            >
-                             🎫 Book Tickets
-                            </Button>
-                        ) : (
-                            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                                <span>Select Date:</span>
+                            <p>
+                                <b>Duration:</b>{" "}
+                                {durationFormat(movie.duration)}
+                            </p>
 
-                                <Input
-                                    type="date"
-                                    value={date}
-                                    onChange={handleDate}
-                                    min={moment().format("YYYY-MM-DD")}
-                                    style={{ width: 200 }}
-                                />
+                            <Divider className="my-3" />
+
+                            <div className="mb-3">
+                                <Tag color="blue">
+                                    {movie.language}
+                                </Tag>
                             </div>
-                        )}
 
+                            {!bookingMode ? (
+                                <Button
+                                    type="primary"
+                                    danger
+                                    disabled={user?.role !== "user"}
+                                    onClick={() =>
+                                        setBookingMode(true)
+                                    }
+                                >
+                                    🎫 Book Tickets
+                                </Button>
+                            ) : (
+                                <div className="flex flex-col gap-2">
+                                    <span>Select Date:</span>
+
+                                    <Input
+                                        type="date"
+                                        value={date}
+                                        onChange={handleDate}
+                                        min={moment().format(
+                                            "YYYY-MM-DD"
+                                        )}
+                                        className="w-full sm:w-48"
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </Card>
             )}
-            
 
-            {/* ================= EMPTY STATE ================= */}
+            {/* EMPTY STATE */}
             {bookingMode && theatres.length === 0 && (
-                <Card style={{ marginTop: 20, textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", }}>
+                <Card
+                    style={{
+                        marginTop: 20,
+                        textAlign: "center",
+                        boxShadow:
+                            "0 2px 10px rgba(0,0,0,0.1)",
+                    }}
+                >
                     <h3>No shows available for this date</h3>
                 </Card>
             )}
 
-            {/* ================= THEATRES ================= */}
+            {/* THEATRES */}
             {theatres.length > 0 && (
-                <div style={{ marginTop: 20 }}>
-                    <h2 style={{ padding: "10px" }}>Available Theatres</h2>
-                    <Table
-                        dataSource={theatres}
-                        columns={columns}
-                        rowKey="_id"
-                        pagination={false}
-                    />
+                <div className="max-w-5xl mx-auto mt-5">
+                    <h2 className="p-2 text-lg font-semibold">
+                        Available Theatres
+                    </h2>
+
+                    <div className="overflow-x-auto">
+                        <Table
+                            dataSource={theatres}
+                            columns={columns}
+                            rowKey="_id"
+                            pagination={false}
+                        />
+                    </div>
                 </div>
             )}
-
         </div>
-
     );
 }
+
 export default SingleMovie;
