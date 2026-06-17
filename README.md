@@ -135,6 +135,8 @@ PORT=8081
 - Landing Page
  <img width="1320" height="579" alt="image" src="https://github.com/user-attachments/assets/3e8a83cb-ec26-4fb3-9e3c-6ece1b2ff8eb" />
 
+ ---
+
 - Login Page
  <img width="1320" height="547" alt="image" src="https://github.com/user-attachments/assets/f7fcacb7-5fcc-42d2-921a-da57eb293cf8" />
 
